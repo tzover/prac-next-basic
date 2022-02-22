@@ -11,14 +11,11 @@ ARG wkdir=/home/${USER_NAME}/app
 
 WORKDIR ${wkdir}
 
-COPY ./app/package*.json /home/${USER_NAME}/app/
-COPY ./app/yarn.lock /home/${USER_NAME}/app/
+COPY ./app/ /home/${USER_NAME}/app/
 
 RUN yarn install
 
-COPY ./app/ /home/${USER_NAME}/app/
-
-# RUN npm run-script build
+# RUN yarn build
 
 RUN echo "root:root" | chpasswd \
     && usermod -aG sudo ${USER_NAME} \
@@ -28,6 +25,5 @@ RUN echo "root:root" | chpasswd \
     && chown -hR ${USER_NAME}:${USER_NAME} ${wkdir} 
 
 USER ${USER_NAME}
-
 
 # CMD [ "npx", "serve", "-s", "-n", "build" ]
